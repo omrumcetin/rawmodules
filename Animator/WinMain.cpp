@@ -53,7 +53,7 @@ int WinMain(HINSTANCE HInstance, HINSTANCE HPrevInstance, PSTR SzCmdLine, int IC
     wndclass.hCursor = LoadCursor(NULL, IDC_ARROW);
     wndclass.hbrBackground = (HBRUSH)(COLOR_BTNFACE + 1);
     wndclass.lpszMenuName = 0;
-    wndclass.lpszClassName = (LPCWSTR)R"(Win32 Game Window)";
+    wndclass.lpszClassName = L"Win32 Game Window";
     RegisterClassEx(&wndclass);
 
     int screenWidth = GetSystemMetrics(SM_CXSCREEN);
@@ -74,7 +74,7 @@ int WinMain(HINSTANCE HInstance, HINSTANCE HPrevInstance, PSTR SzCmdLine, int IC
     DWORD style = (WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX);
     // WS_THICKFRAME to resize
     AdjustWindowRectEx(&windowRect, style, FALSE, 0);
-    HWND hwnd = CreateWindowEx(0, wndclass.lpszClassName, (LPCWSTR)R"(Game Window)", style, windowRect.left, windowRect.top, windowRect.right - windowRect.left, windowRect.bottom - windowRect.top, NULL, NULL, HInstance, SzCmdLine);
+    HWND hwnd = CreateWindowEx(0, wndclass.lpszClassName, L"Game Window", style, windowRect.left, windowRect.top, windowRect.right - windowRect.left, windowRect.bottom - windowRect.top, NULL, NULL, HInstance, SzCmdLine);
     HDC hdc = GetDC(hwnd);
 
     PIXELFORMATDESCRIPTOR pfd;
@@ -88,6 +88,7 @@ int WinMain(HINSTANCE HInstance, HINSTANCE HPrevInstance, PSTR SzCmdLine, int IC
     pfd.cStencilBits = 8;
     pfd.iLayerType = PFD_MAIN_PLANE;
     int pixelFormat = ChoosePixelFormat(hdc, &pfd);
+    SetPixelFormat(hdc, pixelFormat, &pfd);
 
     HGLRC tempRC = wglCreateContext(hdc);
     wglMakeCurrent(hdc, tempRC);
@@ -100,11 +101,10 @@ int WinMain(HINSTANCE HInstance, HINSTANCE HPrevInstance, PSTR SzCmdLine, int IC
         WGL_CONTEXT_MINOR_VERSION_ARB, 3,
         WGL_CONTEXT_FLAGS_ARB, 0,
         WGL_CONTEXT_PROFILE_MASK_ARB, WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
-        0,
+    0,
     };
 
     HGLRC hglrc = wglCreateContextAttribsARB(hdc, 0, attribList);
-
     wglMakeCurrent(NULL, NULL);
     wglDeleteContext(tempRC);
     wglMakeCurrent(hdc, hglrc);
@@ -118,7 +118,7 @@ int WinMain(HINSTANCE HInstance, HINSTANCE HPrevInstance, PSTR SzCmdLine, int IC
         std::cout << "OpenGL Version " << GLVersion.major << "." << GLVersion.minor << "\n";
     }
 
-    PFNWGLGETEXTENSIONSSTRINGEXTPROC _wglGetExtensionsStringEXT = (PFNWGLGETEXTENSIONSSTRINGEXTPROC)wglGetProcAddress("wglGetExtensionStringEXT");
+    PFNWGLGETEXTENSIONSSTRINGEXTPROC _wglGetExtensionsStringEXT = (PFNWGLGETEXTENSIONSSTRINGEXTPROC)wglGetProcAddress("wglGetExtensionsStringEXT");
     bool swapControlSupported = strstr(_wglGetExtensionsStringEXT(), "WGL_EXT_swap_control") != 0;
 
     int vsync = 0;
