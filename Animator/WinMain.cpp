@@ -11,7 +11,7 @@
 int WINAPI WinMain(HINSTANCE, HINSTANCE, PSTR, int);
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
-Application* gApplication = 0;
+application* gApplication = 0;
 GLuint gVertexArrayObject = 0;
 
 #if _DEBUG
@@ -39,7 +39,7 @@ typedef int (WINAPI* PFNWGLGETSWAPINTERVALEXTPROC) (void);
 
 int WinMain(HINSTANCE HInstance, HINSTANCE HPrevInstance, PSTR SzCmdLine, int ICmdShow)
 {
-    gApplication = new Application();
+    gApplication = new application();
 
     WNDCLASSEX wndclass;
     wndclass.cbSize = sizeof(WNDCLASSEX);
@@ -146,7 +146,7 @@ int WinMain(HINSTANCE HInstance, HINSTANCE HPrevInstance, PSTR SzCmdLine, int IC
 
     ShowWindow(hwnd, SW_SHOW);
     UpdateWindow(hwnd);
-    gApplication->Initialize();
+    gApplication->initialize();
 
     //GAME LOOP STARTS
     DWORD lastTick = GetTickCount();
@@ -168,7 +168,7 @@ int WinMain(HINSTANCE HInstance, HINSTANCE HPrevInstance, PSTR SzCmdLine, int IC
         lastTick = thisTick;
         if (gApplication != 0)
         {
-            gApplication->Update(dt);
+            gApplication->update(dt);
         }
         //Rendering
         if (gApplication != 0)
@@ -188,7 +188,7 @@ int WinMain(HINSTANCE HInstance, HINSTANCE HPrevInstance, PSTR SzCmdLine, int IC
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
             float aspect = (float)clientWidth / (float)clientHeight;
-            gApplication->Render(aspect);
+            gApplication->render(aspect);
         }
 
         //Backbuffer
@@ -218,7 +218,7 @@ LRESULT CALLBACK WndProc(HWND Hwnd, UINT IMsg, WPARAM WParam, LPARAM LParam)
     case WM_CLOSE:
         if (gApplication != 0)
         {
-            gApplication->Shutdown();
+            gApplication->shutdown();
             delete gApplication;
             gApplication = 0;
             DestroyWindow(Hwnd);

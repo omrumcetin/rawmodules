@@ -1,16 +1,16 @@
 #pragma once
 
-class Application
+class application
 {
 public:
-    inline Application() { };
-    inline virtual ~Application() { };
-    inline virtual void Initialize() {};
-    inline virtual void Update(float DeltaTime) {};
-    inline virtual void Render(float AspectRatio) {};
-    inline virtual void Shutdown() {};
+    inline application() { };
+    inline virtual ~application() { };
+    inline virtual void initialize() {};
+    inline virtual void update(float DeltaTime) {};
+    inline virtual void render(float AspectRatio) {};
+    inline virtual void shutdown() {};
 private:
-    Application(const Application&);
-    Application& operator=(const Application&);
+    application(const application&);
+    application& operator=(const application&);
 };
 
